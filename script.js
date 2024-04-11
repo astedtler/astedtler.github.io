@@ -1,6 +1,6 @@
 // Client ID and API key from the Developer Console
 var CLIENT_ID = '409649548615-c25f2opj1rg6i1gmgntnpnvbvfvjre8s.apps.googleusercontent.com';
-var API_KEY = 'AIzaSyBoK9THdCmZe6uTXrczGnRYOugjr82P-Fw';
+var API_KEY = 'AIzaSyCe2XcN2deHtgHnFCQp46W2mThHrSI1Oh8';
 
 // Array to store event colors
 var eventColors = {};
