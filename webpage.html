@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Embedded Google Calendar with Color Coding</title>
+  <style>
+    /* Add custom CSS styles for the calendar here */
+    .event {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div id="calendar"></div>
+
+  <script src="https://apis.google.com/js/api.js"></script>
+  <script>
+    // Load the Google Calendar API
+    gapi.load('client', initClient);
+
+    function initClient() {
+      gapi.client.init({
+        apiKey: 'AIzaSyCe2XcN2deHtgHnFCQp46W2mThHrSI1Oh8',
+        discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"]
+      }).then(function () {
+        // Fetch events
+        fetchEvents();
+      });
+    }
+
+    function fetchEvents() {
+      gapi.client.calendar.events.list({
+        'calendarId': 'primary',
+        'timeMin': (new Date()).toISOString(),
+        'showDeleted': false,
+        'singleEvents': true,
+        'orderBy': 'startTime'
+      }).then(function(response) {
+        var events = response.result.items;
+        
+        if (events.length > 0) {
+          renderCalendar(events);
+        }
+      });
+    }
+
+    function renderCalendar(events) {
+      var calendarContainer = document.getElementById('calendar');
+
+      events.forEach(function(event) {
+        var startTime = event.start.dateTime || event.start.date;
+        var endTime = event.end.dateTime || event.end.date;
+        var title = event.summary;
+        var color = event.colorId || '1'; // Default color
+
+        var eventDiv = document.createElement('div');
+        eventDiv.className = 'event';
+        eventDiv.style.backgroundColor = getColor(color);
+        eventDiv.innerHTML = '<strong>' + title + '</strong><br>' + startTime + ' - ' + endTime;
+        calendarContainer.appendChild(eventDiv);
+      });
+    }
+
+    function getColor(colorId) {
+      // Map Google Calendar color IDs to corresponding colors
+      switch (colorId) {
+        case '11':
+          return 'red';
+        case '7':
+          return 'cyan';
+        case '5':
+          return 'yellow';
+        // Add more color mappings as needed
+        default:
+          return 'black';
+      }
+    }
+  </script>
+</body>
+</html>
